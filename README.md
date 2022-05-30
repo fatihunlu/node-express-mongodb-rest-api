@@ -16,4 +16,5 @@ Simple Node with Express + MongoDB Rest Api
 
 - `npm install`
 - `npm start`
-- optional: include _.env_ in your _.gitignore_
+- Start mongodb(I suggest using docker instead of installing mongo on ur machine)
+`docker run -d -p 27017:27017 --name test-mongo mongo:latest`
