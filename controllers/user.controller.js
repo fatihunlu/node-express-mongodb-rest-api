@@ -1,7 +1,6 @@
 const userModel = require("../db").user;
 
 exports.getAllUsers = (_req, res) => {
-    debugger;
     userModel.find({}, (err, users) => {
         if (err) {
             res.status(500).send(err);
@@ -12,7 +11,6 @@ exports.getAllUsers = (_req, res) => {
 };
 
 exports.getUserById = (req, res) => {
-    debugger;
     userModel.findById(req.params.id, (err, user) => {
         if (err) {
             res.status(500).send(err);
@@ -23,7 +21,6 @@ exports.getUserById = (req, res) => {
 };
 
 exports.create = (req, res) => {
-    debugger;
     const user = new userModel(req.body);
     user.save((err, user) => {
         if (err) {
@@ -38,3 +35,23 @@ exports.create = (req, res) => {
         }
     });
 };
+
+exports.update = (req, res) => {
+    userModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, user) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(user);
+        }
+    });
+}
+
+exports.delete = (req, res) => {
+    userModel.findByIdAndRemove(req.params.id, (err, user) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(user);
+        }
+    });
+}
