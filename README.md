@@ -1,4 +1,4 @@
-#  Simple Node with Express + MongoDB Rest Api
+#  Simple Express + MongoDB Rest Api
 
 Simple Node with Express + MongoDB Rest Api
 
