@@ -1,57 +1,56 @@
 const userModel = require("../db").user;
 
-exports.getAllUsers = (_req, res) => {
-    userModel.find({}, (err, users) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.send(users);
-        }
-    });
+exports.getAllUsers = async (_req, res) => {
+    try {
+        const users = await userModel.find({});
+        res.send(users);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 };
 
-exports.getUserById = (req, res) => {
-    userModel.findById(req.params.id, (err, user) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.send(user);
+exports.getUserById = async (req, res) => {
+    try {
+        const user = await userModel.findById(req.params.id);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
         }
-    });
+        res.send(user);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 };
 
-exports.create = (req, res) => {
-    const user = new userModel(req.body);
-    user.save((err, user) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            user.save(user).then(data => {
-                res.send(data);
-            })
-            .catch(err => {
-                res.status(500).send(err);
-            });
-        }
-    });
+exports.create = async (req, res) => {
+    try {
+        const user = new userModel(req.body);
+        const savedUser = await user.save();
+        res.send(savedUser);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 };
 
-exports.update = (req, res) => {
-    userModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, user) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.send(user);
+exports.update = async (req, res) => {
+    try {
+        const user = await userModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
         }
-    });
-}
+        res.send(user);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
 
-exports.delete = (req, res) => {
-    userModel.findByIdAndRemove(req.params.id, (err, user) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.send(user);
+exports.delete = async (req, res) => {
+    try {
+        const user = await userModel.findByIdAndRemove(req.params.id);
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
         }
-    });
-}
+        res.send(user);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
